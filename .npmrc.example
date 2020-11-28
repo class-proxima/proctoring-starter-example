@@ -1,0 +1,8 @@
+
+# Swap out "<Class Proxima Auth Token>" below with the key you get from purchasing
+# license from https://class-proxima.com. If this is a public repo, you'll want to move this
+# line into ~/.npmrc to keep it private.
+//npm.class-proxima.com/:_authToken=<Class Proxima Auth Token>
+
+# This line tells npm where to find @classproxima packages.
+@classproxima:registry=http://npm.class-proxima.run
