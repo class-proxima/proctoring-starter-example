@@ -5,4 +5,4 @@
 //npm.class-proxima.com/:_authToken=<Class Proxima Auth Token>
 
 # This line tells npm where to find @classproxima packages.
-@classproxima:registry=http://npm.class-proxima.run
+@classproxima:registry=http://npm.class-proxima.com
