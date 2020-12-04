@@ -10,7 +10,7 @@ function App() {
       let status = await proctor.startMonitoring();
       console.log(status);
     };
-    let proctor = new Proctor("api-key", "student-id");
+    let proctor = new Proctor("api-key", "student-id", { selfieInterval: 7 });
     proctor.on("mouse-enter", () => {
       setEvents((events) => [...events, "Mouse entered the window"]);
       console.log("mouse-enter");
@@ -32,6 +32,18 @@ function App() {
         "Tab switched/ Window sent to background",
       ]);
       console.log("page-to-background");
+    });
+    proctor.on("gaze-outside", () => {
+      setEvents((events) => [...events, "Person looking outside the screen"]);
+      console.log("gaze-outside");
+    });
+    proctor.on("multiple-faces-found", () => {
+      setEvents((events) => [...events, "Multiple faces detected"]);
+      console.log("multiple-faces-found");
+    });
+    proctor.on("no-face-found", () => {
+      setEvents((events) => [...events, "No face detected"]);
+      console.log("no-face-found");
     });
     proctoring();
     return () => {
