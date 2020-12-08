@@ -7,10 +7,21 @@ function App() {
   const [events, setEvents] = useState([]);
   useEffect(() => {
     let proctoring = async () => {
+      // ***************
+      // PROGRAMATICALLY START MONITORING
+      // ***************
       let status = await proctor.startMonitoring();
       console.log(status);
     };
-    let proctor = new Proctor("api-key", "student-id", { selfieInterval: 7 });
+    // ***************
+    // INITIALISATION
+    // ***************
+    let proctor = new Proctor("api-key");
+    // ***************
+    // LISTENING TO EVENTS
+    //
+    // Supports two modes - on and once
+    // ***************
     proctor.on("mouse-enter", () => {
       setEvents((events) => [...events, "Mouse entered the window"]);
       console.log("mouse-enter");
@@ -33,6 +44,9 @@ function App() {
       ]);
       console.log("page-to-background");
     });
+    proctor.once("page-to-background", () => {
+      console.log("page-to-background triggered only once");
+    });
     proctor.on("gaze-outside", () => {
       setEvents((events) => [...events, "Person looking outside the screen"]);
       console.log("gaze-outside");
@@ -47,6 +61,9 @@ function App() {
     });
     proctoring();
     return () => {
+      // ***************
+      // PROGRAMATICALLY STOP MONITORING
+      // ***************
       proctor.stopMonitoring();
     };
   }, []);
