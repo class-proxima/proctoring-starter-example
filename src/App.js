@@ -1,17 +1,23 @@
-import logo from "./logo.svg";
 import "./App.css";
 import Proctor from "@classproxima/proctoring";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 function App() {
   const [events, setEvents] = useState([]);
+  const [stream, setStream] = useState();
+  const videoRef = useRef();
+  useEffect(() => {
+    if (stream) videoRef.current.srcObject = stream;
+  }, [stream]);
   useEffect(() => {
     let proctoring = async () => {
       // ***************
       // PROGRAMATICALLY START MONITORING
       // ***************
-      let status = await proctor.startMonitoring();
-      console.log(status);
+      let response = await proctor.startMonitoring();
+      if (response.status) {
+        setStream(response.stream);
+      }
     };
     // ***************
     // INITIALISATION
@@ -69,18 +75,25 @@ function App() {
   }, []);
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <h1>Logs</h1>
-        <h6>
-          Try navigating away from screen, switching tabs to generate logs
-        </h6>
-        <div>
-          {events.map((event) => {
-            return <li style={{ fontSize: "0.75em" }}>{event}</li>;
-          })}
-        </div>
-      </header>
+      <div className="w-100">
+        <header className="App-header">
+          <h4>Video</h4>
+          <video ref={videoRef} autoPlay height="300px"></video>
+        </header>
+      </div>
+      <div className="w-100">
+        <header className="App-header">
+          <h4>Logs</h4>
+          <h6>
+            Try navigating away from screen, switching tabs to generate logs
+          </h6>
+          <div className="logs-container w-100">
+            {events.map((event) => {
+              return <li style={{ fontSize: "0.75em" }}>{event}</li>;
+            })}
+          </div>
+        </header>
+      </div>
     </div>
   );
 }
