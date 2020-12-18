@@ -38,15 +38,15 @@ function App() {
     });
     proctor.on("page-back-to-foreground", () => {
       setEvents((events) => [
-        ...events,
         "Tab in focus/ Window brought to foreground",
+        ...events,
       ]);
       console.log("page-back-to-foreground");
     });
     proctor.on("page-to-background", () => {
       setEvents((events) => [
-        ...events,
         "Tab switched/ Window sent to background",
+        ...events,
       ]);
       console.log("page-to-background");
     });
@@ -54,15 +54,15 @@ function App() {
       console.log("page-to-background triggered only once");
     });
     proctor.on("gaze-outside", () => {
-      setEvents((events) => [...events, "Person looking outside the screen"]);
+      setEvents((events) => ["Person looking outside the screen", ...events]);
       console.log("gaze-outside");
     });
     proctor.on("multiple-faces-found", () => {
-      setEvents((events) => [...events, "Multiple faces detected"]);
+      setEvents((events) => ["Multiple faces detected", ...events]);
       console.log("multiple-faces-found");
     });
     proctor.on("no-face-found", () => {
-      setEvents((events) => [...events, "No face detected"]);
+      setEvents((events) => ["No face detected", ...events]);
       console.log("no-face-found");
     });
     proctoring();
