@@ -2,6 +2,11 @@ import "./App.css";
 import Proctor from "@classproxima/proctoring";
 import { useEffect, useState, useRef } from "react";
 
+const getDateString = () => {
+  const date = new Date();
+  return date.toTimeString().substr(0, 8);
+};
+
 function App() {
   const [events, setEvents] = useState([]);
   const [stream, setStream] = useState();
@@ -29,23 +34,29 @@ function App() {
     // Supports two modes - on and once
     // ***************
     proctor.on("mouse-enter", () => {
-      setEvents((events) => [...events, "Mouse entered the window"]);
+      setEvents((events) => [
+        `${getDateString()} - Mouse entered the window`,
+        ...events,
+      ]);
       console.log("mouse-enter");
     });
     proctor.on("mouse-leave", () => {
-      setEvents((events) => [...events, "Mouse exited from window"]);
+      setEvents((events) => [
+        `${getDateString()} - Mouse exited from window`,
+        ...events,
+      ]);
       console.log("mouse-leave");
     });
     proctor.on("page-back-to-foreground", () => {
       setEvents((events) => [
-        "Tab in focus/ Window brought to foreground",
+        `${getDateString()} - Tab in focus/ Window brought to foreground`,
         ...events,
       ]);
       console.log("page-back-to-foreground");
     });
     proctor.on("page-to-background", () => {
       setEvents((events) => [
-        "Tab switched/ Window sent to background",
+        `${getDateString()} - Tab switched/ Window sent to background`,
         ...events,
       ]);
       console.log("page-to-background");
@@ -54,15 +65,24 @@ function App() {
       console.log("page-to-background triggered only once");
     });
     proctor.on("gaze-outside", () => {
-      setEvents((events) => ["Person looking outside the screen", ...events]);
+      setEvents((events) => [
+        `${getDateString()} - Person looking outside the screen`,
+        ...events,
+      ]);
       console.log("gaze-outside");
     });
     proctor.on("multiple-faces-found", () => {
-      setEvents((events) => ["Multiple faces detected", ...events]);
+      setEvents((events) => [
+        `${getDateString()} - Multiple faces detected`,
+        ...events,
+      ]);
       console.log("multiple-faces-found");
     });
     proctor.on("no-face-found", () => {
-      setEvents((events) => ["No face detected", ...events]);
+      setEvents((events) => [
+        `${getDateString()} - No face detected`,
+        ...events,
+      ]);
       console.log("no-face-found");
     });
     proctoring();
