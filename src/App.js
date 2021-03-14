@@ -22,12 +22,21 @@ function App() {
       let response = await proctor.startMonitoring();
       if (response.status) {
         setStream(response.stream);
+      } else {
+        console.error(response.error);
       }
     };
     // ***************
     // INITIALISATION
     // ***************
-    let proctor = new Proctor("api-key");
+    let proctor = new Proctor(
+      {
+        activityUID: "activity123",
+        apiKey: "api-key",
+        studentUID: "student1234",
+      },
+      true
+    );
     // ***************
     // LISTENING TO EVENTS
     //
