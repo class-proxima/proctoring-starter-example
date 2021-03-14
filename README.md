@@ -11,6 +11,10 @@ This is basic react starter kit to use `@classproxima/proctoring` package in you
 5. Run `npm run start` to start the app
 6. Navigate to [http://localhost:3000](http://localhost:3000)
 
+# Class Proxima proctoring
+
+NPM package to integrate class-proxima proctoring services in your web app.
+
 ## Supports
 
 - ReactJS
@@ -52,8 +56,30 @@ import proctoring from "@classproxima/proctoring";
 
 ### `constructor`
 
+|      Argument      |    Type    | Required | Default |                              Description                              |
+| :----------------: | :--------: | :------: | :-----: | :-------------------------------------------------------------------: |
+|    User Config     | userConfig |   Yes    |    -    |                                   -                                   |
+| getRealTimeUpdates |  boolean   |    No    |  false  | Allows user to set realtime proctoring event callback using `on/once` |
+
+`userConfig` is an object with fields
+
+|     Key      |  Type  | Required |
+| :----------: | :----: | :------: |
+|  studentUID  | string |   Yes    |
+|    apiKey    | string |   Yes    |
+| activityUID  | string |   Yes    |
+| activityName | string |    No    |
+
 ```ts
-const proctoring = new Proctor("api-key");
+const proctoring = new Proctor(
+  {
+    studentUID: "student123",
+    apiKey: "api-key",
+    activityUID: "activity456",
+    activityName: "demo-activity",
+  },
+  false
+);
 ```
 
 **Note:** Replace `api-key` with the actual API Key you received
@@ -80,6 +106,17 @@ proctoring.stopMonitoring();
 `on` - Listen to events multiple times  
 `once` - Listen to a particular event only once
 
+**Note**: This feature requires `getRealTimeUpdates` to be true in constructor
+
+#### Supported Realtime Events
+
+- `mouse-enter`
+- `mouse-leave`
+- `page-to-background`
+- `page-back-to-foreground`
+- `multiple-faces-found`
+- `no-face-found`
+
 ```ts
 proctoring.once("page-to-background", () => {
   alert("Auto submitting quiz");
@@ -89,22 +126,36 @@ proctoring.on("no-face-found", () => {
 });
 ```
 
-## Supported Events
+### Listening to error
 
-- `mouse-enter`
-- `mouse-leave`
-- `page-to-background`
-- `page-back-to-foreground`
-- `gaze-outside`
-- `multiple-faces-found`
-- `no-face-found`
+You can also listen to error related to api quota exhaustion and unauthorised request. Currently there are 2 error events you can listen to
+
+- `unauthorised-user`
+- `quota-limit-reached`
+
+```ts
+proctoring.on("unauthorised-user", () => {
+  // Code to handle it
+});
+proctoring.on("quota-limit-reached", () => {
+  // Code to handle it
+});
+```
 
 ## Bundled types
 
-**`proctoringEvents`** - Array of all the supported events
+**`realtimeEvents`** - Array of all the supported events
 
 Usage:
 
 ```typescript
-import proctoring, { proctoringEvents } from "@classproxima/proctoring";
+import proctoring, { realtimeEvents } from "@classproxima/proctoring";
 ```
+
+## Limitation
+
+Currently we do not support server side rendering.
+
+## Starter kit
+
+We have created a starter kit for you to test and easily understand the workings of the module. You can view the starter kit [here](https://github.com/class-proxima/proctoring-starter-example)
