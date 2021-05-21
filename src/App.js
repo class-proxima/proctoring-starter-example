@@ -31,9 +31,9 @@ function App() {
     // ***************
     let proctor = new Proctor(
       {
-        activityUID: "activity123",
-        apiKey: "api-key",
-        studentUID: "student1234",
+        activityUID: "yash-test-activity-id",
+        apiKey: "5BD3G67-BDD4PT9-J08HC2Q-4M4PFNC",
+        studentUID: "yash-test-student-id",
       },
       true
     );
@@ -93,6 +93,13 @@ function App() {
         ...events,
       ]);
       console.log("no-face-found");
+    });
+    proctor.on("expressions", (e) => {
+      setEvents((events) => [
+        `${getDateString()} - Expression: ${e.detail.toString()}`,
+        ...events,
+      ]);
+      console.log(e.detail);
     });
     proctoring();
     return () => {
